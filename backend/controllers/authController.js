@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
-dotenv.config({ path: "backend/config/config.env" });
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: "Gmail",
@@ -20,7 +20,6 @@ const transporter = nodemailer.createTransport({
 });
 exports.signin = catchAsyncErrors(async (request, response, next) => {
   const { email, password } = request.body;
-
   if (!email || !password) {
     return response
       .status(400)
@@ -164,6 +163,12 @@ exports.signup = catchAsyncErrors(async (request, response, next) => {
           );
           break; 
         case 'instructor':
+          await executeQuery(
+            `INSERT INTO instructors (instructor_id, department, qualifications) VALUES (?, ?, ?)`,
+            [newUserId, department, qualifications]
+          );
+          break;
+        case 'admin':
           await executeQuery(
             `INSERT INTO instructors (instructor_id, department, qualifications) VALUES (?, ?, ?)`,
             [newUserId, department, qualifications]

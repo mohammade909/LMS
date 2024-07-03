@@ -1,6 +1,6 @@
 const experss = require("express");
 const authRoutes = require("./routes/authRoutes");
-
+const userRoutes = require("./routes/userRoutes");
 const db = require("./config/database");
 const cors = require("cors");
 const multer = require("multer");
@@ -38,6 +38,7 @@ const uploadFile = multer({ storage: storage });
 
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // Middle wares
 app.use(errorMiddleware);
